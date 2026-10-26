@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Society Billing Studio</title>
+  <link rel="stylesheet" href="style_bill.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">✦</div>
+      <div>
+        <h2>BillStudio</h2>
+        <small>Organization Manager</small>
+      </div>
+    </div>
+
+    <p class="menu-label">WORKSPACE</p>
+    <a class="nav-link active" href="#dashboard">▦ Dashboard</a>
+    <a class="nav-link" href="#billing">＋ Create Receipt</a>
+    <a class="nav-link" href="#history">◷ Payment History</a>
+    <a class="nav-link" href="#receipt">▤ Receipt Preview</a>
+
+    <div class="sidebar-bottom">
+      <div class="help-card">
+        <span>💡</span>
+        <strong>Your records, organized.</strong>
+        <small>Track collections and customer payments in one place.</small>
+      </div>
+      <small>BillStudio · Local Edition</small>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ORGANIZATION MANAGEMENT</p>
+        <h1>Billing Dashboard <span>✦</span></h1>
+        <p class="muted">Manage your receipts, customers and collections.</p>
+      </div>
+      <button class="btn btn-primary" id="newBillBtn">＋ New Receipt</button>
+    </header>
+
+    <section id="dashboard" class="stats-grid">
+      <article class="stat-card purple">
+        <div class="stat-top"><span>Total Collected</span><span>₹</span></div>
+        <h2 id="totalCollected">₹0.00</h2>
+        <small>Successful payments</small>
+      </article>
+      <article class="stat-card blue">
+        <div class="stat-top"><span>Pending Amount</span><span>◷</span></div>
+        <h2 id="totalPending">₹0.00</h2>
+        <small>Outstanding balances</small>
+      </article>
+      <article class="stat-card orange">
+        <div class="stat-top"><span>Total Receipts</span><span>▤</span></div>
+        <h2 id="totalReceipts">0</h2>
+        <small>All recorded bills</small>
+      </article>
+      <article class="stat-card green">
+        <div class="stat-top"><span>Customers</span><span>♙</span></div>
+        <h2 id="totalCustomers">0</h2>
+        <small>Unique phone numbers</small>
+      </article>
+    </section>
+
+    <section id="billing" class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">PAYMENT ENTRY</p>
+          <h2>Create a bill or receipt</h2>
+          <p class="muted">Enter the customer and payment details below.</p>
+        </div>
+        <span class="pill">● New Entry</span>
+      </div>
+
+      <form id="billForm">
+        <div class="form-grid">
+          <label>Customer / Member Name *
+            <input id="customerName" required maxlength="100"
+              placeholder="e.g. Rahul Patel">
+          </label>
+          <label>Contact Number *
+            <input id="phone" required inputmode="tel"
+              maxlength="15" placeholder="e.g. 9876543210">
+          </label>
+          <label class="span-two">Organization / Society Name *
+            <input id="society" required maxlength="150"
+              placeholder="Your organization or society">
+          </label>
+          <label class="span-two">Full Address
+            <textarea id="address" rows="2" maxlength="500"
+              placeholder="House no., street, city, PIN code"></textarea>
+          </label>
+          <label>Receipt Date *
+            <input type="date" id="date" required>
+          </label>
+          <label>Receipt Number
+            <input id="receiptNo" readonly>
+          </label>
+          <label>Payment For *
+            <select id="purpose" required>
+              <option value="Society Maintenance">Society Maintenance</option>
+              <option value="Membership Fee">Membership Fee</option>
+              <option value="Donation">Donation</option>
+              <option value="Event Contribution">Event Contribution</option>
+              <option value="Subscription">Subscription</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+          <label>Payment Method *
+            <select id="method" required>
+              <option value="UPI">UPI</option>
+              <option value="Cash">Cash</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="Cheque">Cheque</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+          <label>Total Amount (₹) *
+            <input type="number" id="amount" required min="0.01"
+              max="100000000" step="0.01" placeholder="5000">
+          </label>
+          <label>Amount Paid (₹) *
+            <input type="number" id="paid" required min="0"
+              max="100000000" step="0.01" placeholder="5000">
+          </label>
+          <label>Payment Reference (optional)
+            <input id="reference" maxlength="100"
+              placeholder="UPI transaction / cheque no.">
+          </label>
+          <label>Financial Year / Period
+            <input id="period" maxlength="60"
+              placeholder="e.g. April 2026 – March 2027">
+          </label>
+          <label class="span-two">Notes (optional)
+            <textarea id="notes" rows="2" maxlength="500"
+              placeholder="Additional payment details"></textarea>
+          </label>
+        </div>
+        <div class="form-footer">
+          <p class="muted">* Required fields. Balance is calculated automatically.</p>
+          <div class="button-group">
+            <button type="reset" class="btn btn-light">Clear Form</button>
+            <button type="submit" class="btn btn-primary">Save & Generate Receipt →</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section id="history" class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">CUSTOMER DATABASE</p>
+          <h2>Payment History</h2>
+          <p class="muted">Select a customer or receipt to see previous transactions.</p>
+        </div>
+        <button id="exportBtn" class="btn btn-light">↓ Export CSV</button>
+      </div>
+
+      <div class="search-row">
+        <input id="searchInput"
+          placeholder="⌕  Search name, phone, society or receipt number...">
+        <select id="statusFilter">
+          <option value="All">All statuses</option>
+          <option value="Paid">Paid</option>
+          <option value="Partial">Partially Paid</option>
+          <option value="Pending">Pending</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Receipt / Date</th>
+              <th>Customer</th>
+              <th>Purpose</th>
+              <th>Amount</th>
+              <th>Paid</th>
+              <th>Balance</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+      <p id="recordCount" class="muted"></p>
+      <p class="muted small">Click any row to open the receipt and transaction details.</p>
+    </section>
+
+    <section id="customerHistory" class="panel hidden">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">CUSTOMER ACCOUNT</p>
+          <h2 id="customerHistoryTitle">Customer history</h2>
+          <p id="customerHistoryInfo" class="muted"></p>
+        </div>
+        <button id="closeCustomerHistory" class="btn btn-light">Close</button>
+      </div>
+      <div class="customer-summary">
+        <div><small>Total Billed</small><h3 id="customerBilled">₹0</h3></div>
+        <div><small>Total Paid</small><h3 id="customerPaid">₹0</h3></div>
+        <div><small>Outstanding</small><h3 id="customerBalance">₹0</h3></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Date / Receipt</th><th>Purpose</th><th>Amount</th>
+            <th>Paid</th><th>Balance</th><th>Status</th>
+          </tr></thead>
+          <tbody id="customerHistoryBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="receipt" class="panel">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">DOCUMENT CENTER</p>
+          <h2>Receipt Preview</h2>
+          <p class="muted">Print or save the selected receipt as a PDF.</p>
+        </div>
+        <div class="button-group">
+          <button id="printBtn" class="btn btn-light">⎙ Print / PDF</button>
+          <button id="whatsappBtn" class="btn btn-whatsapp">↗ WhatsApp</button>
+        </div>
+      </div>
+      <div id="receiptPreview" class="receipt-paper">
+        <div class="empty-receipt">
+          <div>▤</div>
+          <h3>Your receipt will appear here</h3>
+          <p>Save a new bill or select a previous transaction.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>BillStudio © <span id="year"></span> · Keep your records accurate and up to date.</footer>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script_bill.js"></script>
+</body>
+</html>
